@@ -21,6 +21,7 @@ BOARD_KERNEL_CMDLINE := mem=471M console=ttyMSM2,115200n8 androidboot.hardware=p
 # Board
 TARGET_BOOTLOADER_BOARD_NAME := p690
 TARGET_OTA_ASSERT_DEVICE := gelato,p690
+TARGET_SPECIFIC_HEADER_PATH := device/lge/p690/include
 
 # Platform
 TARGET_BOARD_PLATFORM := msm7x27
