@@ -38,6 +38,9 @@ namespace android_audio_legacy {
 using android::SortedVector;
 using android::Mutex;
 
+// P500 SPEAKER_IN_CALL fix
+#define AUDIO_DEVICE_OUT_SPEAKER_IN_CALL 0x4000
+
 
 // ----------------------------------------------------------------------------
 // Kernel driver interface
@@ -52,18 +55,19 @@ using android::Mutex;
 #define SAMP_RATE_INDX_32000	6
 #define SAMP_RATE_INDX_44100	7
 #define SAMP_RATE_INDX_48000	8
-#define SAMP_RATE_INDX_96000    9
+#define SAMP_RATE_INDX_64000	9
+#define SAMP_RATE_INDX_96000    10
 
 #define EQ_MAX_BAND_NUM 12
 
 #define ADRC_ENABLE  0x0001
-#define ADRC_DISABLE 0x0000
+#define ADRC_DISABLE 0xFFFE
 #define EQ_ENABLE    0x0002
-#define EQ_DISABLE   0x0000
+#define EQ_DISABLE   0xFFFD
 #define RX_IIR_ENABLE  0x0004
-#define RX_IIR_DISABLE 0x0000
+#define RX_IIR_DISABLE 0xFFFB
 #define MBADRC_ENABLE  0x0010
-#define MBADRC_DISABLE 0x0000
+#define MBADRC_DISABLE 0xFFEF
 
 #define AGC_ENABLE     0x0001
 #define NS_ENABLE      0x0002
@@ -177,7 +181,7 @@ public:
 
     virtual status_t    setVoiceVolume(float volume);
     virtual status_t    setMasterVolume(float volume);
-#ifdef FM_RADIO
+#ifdef HAVE_FM_RADIO
     virtual status_t    setFmVolume(float volume);
 #endif
     virtual status_t    setMode(int mode);
@@ -224,7 +228,7 @@ private:
     uint32_t    getInputSampleRate(uint32_t sampleRate);
     bool        checkOutputStandby();
     status_t    doRouting(AudioStreamInMSM72xx *input);
-#ifdef FM_RADIO
+#ifdef HAVE_FM_RADIO
     status_t    setFmOnOff(bool onoff);
 #endif
     AudioStreamInMSM72xx*   getActiveInput_l();
@@ -324,7 +328,7 @@ private:
             bool mDualMicEnabled;
             int  mTtyMode;
             bool mBuiltinMicSelected;
-#ifdef FM_RADIO
+#ifdef HAVE_FM_RADIO
             int mFmRadioEnabled;
             int mFmPrev;
 #endif
